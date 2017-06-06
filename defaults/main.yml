@@ -1,0 +1,4 @@
+---
+
+aws_codedeploy_region: ap-notheast-1
+aws_codedeploy_agent_install_md5: 4b02bf1760b8d9dd58ae47cb6f3f05bc

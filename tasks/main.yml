@@ -1,0 +1,27 @@
+---
+
+- name: Install ruby for CodeDeploy Agent.
+  become: yes
+  apt:
+    state: latest
+    name: ruby
+    update_cache: yes
+
+- name: "Download CodeDeploy Agent."
+  get_url:
+    url: "https://aws-codedeploy-{{ aws_codedeploy_region }}.s3.amazonaws.com/latest/install"
+    dest: "~/aws_codedeploy_install"
+    mode: "0755"
+    checksum: "md5: {{ aws_codedeploy_agent_install_md5 }}"
+
+- name: Installing CodeDeploy Agent.
+  become: yes
+  command: ./aws_codedeploy_install auto
+  args:
+    chdir: ~/
+
+- name: "Cleanup aws_codedeploy_install"
+  file:
+    path: "~/aws_codedeploy_install"
+    state: absent
+  notify: restart codedeploy-agent
